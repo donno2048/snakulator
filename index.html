@@ -1,0 +1,104 @@
+<style>body, input, textarea {font-size: 12px;font-family: monospace;}.inputArea {min-width: 600px;min-height: 100px;tab-size: 4;padding: 0px 0px 0px 0px;word-break: none;white-space: pre;position: absolute;top: 0;left: 0;}.inputBox {z-index: 0;background: transparent;outline: none;border: none;min-height: 250px;}textarea.inputBox {resize: none;}.inputOverlay {position: relative;top: -100px;z-index: -100;pointer-events: none;position: absolute;top: 0;left: 0;}.scrollable {width: 600px;height: 250px;overflow: hidden;border: 1px solid;}.inputContainer {owerflow: hidden;position: relative;}.inputOverlay .spaces {background-color: #ff9999;}.inputOverlay .tabs {background-color: #9999ff;}.btn {display: inline-block;font-size: 12px;}.btn a {cursor: default;}.btn a {color: black;text-decoration: none;}.btn a:hover {color: white;background-color: black;}.activeTab {border-top: 1px solid;border-left: 1px solid;border-right: 1px solid;border-bottom: none;}.outputArea {overflow: hidden;width: 600px;height: 200px;}.outputText {font-size: 0;}.outputText form {display: inline-block;}.outputText span{font-size: 12px;white-space: pre;word-break: none;}.consoleText {white-space: pre;word-brake: none;}.tabContent {display: none;}.tabLabels {position: relative;}.allTabs {width: 600px;height: 230px;border: 1px solid;display: inline-block;}.userInput {border: none;outline: none;margin: 0px;padding: 0px;width: 100%;}#panels {width: 960px;display: inline-block;}#panelMiddle .content {padding-left: .5em;padding-right: .5em;padding-bottom: .5em;}#panelRight .content {width: 150px;height: 500px;}#panelLeft .content {height: 510px;width: 150px;overflow-x: hidden;}#fileList {min-width: 150px;}div.panel {height: 550px;border: 4px double;margin-top: 5px;display: inline-block;vertical-align: top;}div.panel div.label {text-align: center;position: relative;top: -.75em;}div.panel div.label span {padding-left: .5em;padding-right: .5em;background-color: white;}.fileEntry a {color: black;text-decoration: none;cursor: default;}.fileEntry:hover {background-color: black;color: white;}.fileEntry:hover input {background-color: black;color: white;}.fileEntry:hover a {background-color: black;color: white;}.fileEntry input {width:120px;background-color: transparet;cursor: default;}.fileEntry form {display: inline-block;margin: 0;}.ico {margin-left: 2px;margin-right: 2px;vertical-align: top;display: inline-block;width: 14px;height: 14px;}.fileTypeWs .ico {background: url('icoset.png') 0 0 no-repeat;background-position: 0 0 }.fileTypeAsm .ico {background: url('icoset.png') no-repeat;background-position: -15px 0 }.buttonBar {height:14px;font-size: 0;}#heapSpan {white-space: pre-wrap;}.emph {font-weight: bold;}.emph input {font-weight: bold;}.modalFog {z-index: 1000;position: fixed;top: 0px;left: 0px;height: 100%;width: 100%;background-color: rgba(255, 255, 255,0.75);}#modal {position: absolute;z-index: 1002;margin-left:auto;margin-right:auto;min-width: 100px;min-height: 100px;border: 4px double;display: inline-block;position: absolute;}#splashScreenModal {width:300px;height:200px;display:inline-block;background-color: white;background: url(../img/lips.png) white no-repeat;background-position-y: 20px;}#splashScreenModal .nameVersion {display: inline-block;margin-left:140px;margin-top: 90px;white-space: pre;}#helpModal {background-color: white;}#helpModal #helpModalContent {width: 700px;height: 500px;}#helpModal #helpModalContent iframe {width: 100%;height: 100%;border: 0;}#modal .modalContent {z-index: 1003;display: none;}#errorDiv {display: inline-block;width: 530px;margin-top: 3px;margin-bottom: 3px;color: red;height: 1em;}#animDiv {display: inline-block;white-space: pre;margin-top: 3px;margin-bottom: 3px;width: 50px;height: 1em;}.asmLine {white-space: nowrap;}.asmLine.running {background-color: blue;color: white;}.asmLine.running.breakpoint {background-color: blue;color: white;}.asmLine.breakpoint {background-color: lightblue;}.asmLine.asmInstr {padding-left: 12px;}</style>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="ws.js"></script>
+<div id="panels">
+  <div id="panelLeft" class="panel">
+    <div id="panelLeftLabel" class="label">
+      <span>Files</span>
+    </div>
+    <div class="buttonBar">
+      <span class="btn"><a href="javascript:void(0);" onclick="return ws_ide.newFile();">[New]</a></span>
+      <span class="btn localStorageButton"><a href="javascript:void(0);" onclick="return ws_ide.deleteFile();">[Delete]</a></span>
+      <span class="btn localStorageButton"><a href="javascript:void(0);" onclick="return ws_ide.saveFile();">[Save]</a></span>
+    </div>
+    <div class="content">
+      <div id="fileList">
+      </div>
+    </div>
+  </div>
+  <div id="panelMiddle" class="panel">
+    <div id="panelMiddleLabel" class="label">
+      <span>noname.ws</span>
+    </div>
+    <div class="content">
+      <div id="buttonDiv">
+        <span class="btn"><a href="javascript:void(0);" onclick="ws_ide.runProgram();">[Run]</a></span> 
+        <span class="btn" id="btnCompile"><a href="javascript:void(0);" onclick="ws_ide.compileAsm();">[Compile]</a></span> 
+        <span class="btn" id="btnOptimize"><a href="javascript:void(0);" onclick="ws_ide.optimizeProgram();">[Optimize]</a></span> 
+        <span class="btn" id="btnEnableHighlight"  style="display:none"><a href="javascript:void(0);" onclick="ws_ide.setHighlight(true);">[ ]Highlight</a></span> 
+        <span class="btn" id="btnDisableHighlight" style="display: none;"><a href="javascript:void(0);"  onclick="ws_ide.setHighlight(false);">[X]Highlight</a></span>
+        <span class="btn" id="btnDownload"><a href="javascript:void(0);" onclick="ws_ide.downloadFile();">[Download]</a></span> 
+        <div style="display:inline-block;"></div>
+      </div>
+      <div id="scrollableSource" class="scrollable">
+        <div id="inputContainer" class="inputContainer">
+          <textarea id="srcInput" class="inputArea inputBox">Open a new file to start</textarea>
+          <div id="srcOverlay" class="inputArea inputOverlay"></div>
+        </div>
+      </div>
+      <div id="srcHiddenDiv" class="inputArea" style="display: none;"></div>
+      <div id="errorDiv">&nbsp;</div>
+      <div id="animDiv">&nbsp;</div>
+      <div class="outputTabs">
+        <div class="tabLabels">
+          <div id="tabLabelPrint" class="btn">
+            <a href="#printTab" onclick="return ws_ide.switchTab(this);">Output</a>
+          </div>
+          <div id="tabLabelConsole" class="btn">
+            <a href="#consoleTab" onclick="return ws_ide.switchTab(this);">Console</a>
+          </div>
+          <div class="btn">
+            <a href="#memoryTab" onclick="return ws_ide.switchTab(this);">Memory</a>
+          </div>
+        </div>
+        <div class="allTabs">
+          <div id="printTab" class="tabContent">
+            <div class="buttonBar">
+              <span class="btn"><a href="javascript:void(0);" onclick="return ws_ide.clearPrintArea('#printArea');">[Clear]</a></span>
+            </div>
+            <div class="outputArea" onclick="ws_ide.focusUserInput('#userInput')">
+              <div id="printArea" class="outputText">
+                <span></span>
+                <form onsubmit="return ws_ide.handleUserInput('#userInput');">
+                  <input type="text" id="userInput" class="userInput">
+                </form>
+              </div>
+            </div>
+          </div>
+          <div id="consoleTab" class="tabContent">
+            <div class="buttonBar">
+              <span class="btn"><a href="javascript:void(0);" onclick="return ws_ide.clearPrintArea('#consoleArea');">[Clear]</a></span>
+            </div>
+            <div id="consoleArea" class="outputArea consoleText"></div>
+          </div>
+          <div id="memoryTab" class="tabContent">
+            <div class="buttonBar"></div>
+            <div id="memoryArea">
+              <div>
+                <span>Stack: </span>
+                <span id="stackSpan"></span>
+              </div>
+              <div>
+                <span>Heap: </span>
+                <span id="heapSpan"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="panelRight" class="panel">
+    <div id="panelRightLabel" class="label">
+      <span>Debug</span>
+    </div>
+    <div class="buttonBar">
+      <span class="btn" id="btnDebugRunProgram"><a href="javascript:void(0);"  onclick="ws_ide.runProgram(true);">[Run]</a></span>
+      <span class="btn" id="btnDebugStepProgram"><a href="javascript:void(0);"  onclick="ws_ide.stepProgram();">[Step]</a></span>
+      <span class="btn" id="btnDebugStopProgram"><a href="javascript:void(0);"  onclick="ws_ide.stopProgram();">[Stop]</a></span>
+    </div>
+    <div class="content">
+      <div id="disasm"></div>
+    </div>
+  </div>
+</div>
