@@ -1,4 +1,4 @@
-If you run this code (_main.py_) in whitespace it will function as a calculator (type numbers, when you type -1 you will get the sum) and in Python, it's a snake game (use the asdw keys).
+If you run this code (_main.py_) in whitespace it will print "Hello world!" and in Python, it's a snake game (use the asdw keys).
 
 You can view the [online demo](https://donno2048.github.io/snakulator) for the whitespace.
 
